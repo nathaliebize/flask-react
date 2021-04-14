@@ -11,12 +11,25 @@ export default class TodoList extends React.Component<{}, TodoListState> {
 	constructor(props: {}) {
 		super(props);
 		this.state = {
-			todoList: ['vaccum', 'make the bed', 'dishes'],
+			todoList: [],
 			newTask: ''
 		}
         this.addNewTask = this.addNewTask.bind(this);
         this.updateNewTask = this.updateNewTask.bind(this);
         this.removeTask = this.removeTask.bind(this);
+	}
+
+	componentDidMount() {
+		fetch('http://127.0.0.1:5000/list')
+			.then(res => res.json())
+			.then(data => {
+				this.setState((prev) => ({
+					...prev,
+					todoList: [...prev.todoList, ...data.items],
+				}));
+			})
+			.catch(err => console.error(err));
+		
 	}
 
 	addNewTask() {
