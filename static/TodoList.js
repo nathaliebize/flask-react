@@ -86,7 +86,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
       }).then(function (data) {
         _this2.setState(function (prev) {
           return _objectSpread(_objectSpread({}, prev), {}, {
-            todoList: [].concat(_toConsumableArray(prev.todoList), _toConsumableArray(data.items))
+            todoList: _toConsumableArray(data.items)
           });
         });
       })["catch"](function (err) {
@@ -96,14 +96,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "addNewTask",
     value: function addNewTask() {
-      if (this.state.newTask != '') {
-        this.setState(function (prev) {
-          return {
-            todoList: [].concat(_toConsumableArray(prev.todoList), [prev.newTask]),
-            newTask: ''
-          };
-        });
-      }
+      var _this3 = this;
 
       fetch('http://127.0.0.1:5000/saveItem', {
         headers: {
@@ -118,6 +111,16 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
       })["catch"](function (error) {
         console.error('Error:', error);
       });
+      fetch('http://127.0.0.1:5000/list').then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this3.setState({
+          todoList: _toConsumableArray(data.items),
+          newTask: ''
+        });
+      })["catch"](function (err) {
+        return console.error(err);
+      });
     }
   }, {
     key: "updateNewTask",
@@ -131,14 +134,8 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "removeTask",
     value: function removeTask(task) {
-      var newTaskList = this.state.todoList.filter(function (currentTask) {
-        return currentTask != task;
-      });
-      this.setState(function (prev) {
-        return _objectSpread(_objectSpread({}, prev), {}, {
-          todoList: newTaskList
-        });
-      });
+      var _this4 = this;
+
       fetch('http://127.0.0.1:5000/removeItem', {
         headers: {
           'Content-Type': 'application/json'
@@ -152,6 +149,17 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
       })["catch"](function (error) {
         console.error('Error:', error);
       });
+      fetch('http://127.0.0.1:5000/list').then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this4.setState(function (prev) {
+          return _objectSpread(_objectSpread({}, prev), {}, {
+            todoList: _toConsumableArray(data.items)
+          });
+        });
+      })["catch"](function (err) {
+        return console.error(err);
+      });
     }
   }, {
     key: "render",
@@ -160,7 +168,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 83,
+          lineNumber: 90,
           columnNumber: 11
         }
       }, /*#__PURE__*/_react["default"].createElement(_TasksList["default"], {
@@ -169,7 +177,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 84,
+          lineNumber: 91,
           columnNumber: 4
         }
       }), /*#__PURE__*/_react["default"].createElement(_NewTask["default"], {
@@ -179,7 +187,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 85,
+          lineNumber: 92,
           columnNumber: 6
         }
       }));

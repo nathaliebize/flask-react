@@ -41,7 +41,7 @@ def create_app(test_config=None):
         item_to_save = request.json['name']
         db = get_db()
         db.execute(
-            'INSERT INTO list VALUES (1, ?);', (item_to_save,)
+            'INSERT INTO list (user_fk, item) VALUES (1, ?);', (item_to_save,)
         )
         db.commit()
         return jsonify(success=True)
@@ -51,7 +51,7 @@ def create_app(test_config=None):
         item_to_remove = request.json['name']
         db = get_db()
         db.execute(
-            'DELETE FROM list WHERE item = ?;', (item_to_remove,)
+            'DELETE FROM list WHERE id = (SELECT id FROM list where item = ? limit 1);', (item_to_remove,)
         )
         db.commit()
         return jsonify(success=True)
