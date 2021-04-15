@@ -46,6 +46,7 @@ var NewTask = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
+    _this.handleKeyPress = _this.handleKeyPress.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -61,22 +62,32 @@ var NewTask = /*#__PURE__*/function (_React$Component) {
       this.props.handleChange(target.value);
     }
   }, {
+    key: "handleKeyPress",
+    value: function handleKeyPress(_ref2) {
+      var key = _ref2.key;
+
+      if (key === 'Enter') {
+        this.handleClick();
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       return /*#__PURE__*/_react["default"].createElement("div", {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 25,
+          lineNumber: 32,
           columnNumber: 11
         }
       }, /*#__PURE__*/_react["default"].createElement("input", {
         onChange: this.handleChange,
         value: this.props.task,
+        onKeyPress: this.handleKeyPress,
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 26,
+          lineNumber: 33,
           columnNumber: 5
         }
       }), /*#__PURE__*/_react["default"].createElement("button", {
@@ -84,7 +95,7 @@ var NewTask = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 27,
+          lineNumber: 34,
           columnNumber: 17
         }
       }, "Add"));

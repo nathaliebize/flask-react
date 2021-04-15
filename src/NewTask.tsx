@@ -3,7 +3,7 @@ import React from 'react';
 type NewTaskProps = {
 	handleClick: () => void,
 	handleChange: (arg: string) => void,
-	task: string
+	task: string,
 }
 
 export default class NewTask extends React.Component<NewTaskProps, {}> {
@@ -11,6 +11,7 @@ export default class NewTask extends React.Component<NewTaskProps, {}> {
 		super(props);
 		this.handleClick = this.handleClick.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	handleClick() {
@@ -21,9 +22,15 @@ export default class NewTask extends React.Component<NewTaskProps, {}> {
 		this.props.handleChange(target.value);
 	}
 
+	handleKeyPress({key}) {
+		if (key === 'Enter') {
+			this.handleClick()
+		}
+	}
+
 	render() {
 		return (<div>
-				<input onChange={this.handleChange} value={this.props.task}></input>
+				<input onChange={this.handleChange} value={this.props.task} onKeyPress={this.handleKeyPress}></input>
                 <button onClick={this.handleClick}>Add</button>
 			</div>);
 	}

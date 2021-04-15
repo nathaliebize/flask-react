@@ -104,6 +104,20 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
           };
         });
       }
+
+      fetch('http://127.0.0.1:5000/saveItem', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          'name': this.state.newTask
+        })
+      }).then(function (response) {
+        return response.json();
+      })["catch"](function (error) {
+        console.error('Error:', error);
+      });
     }
   }, {
     key: "updateNewTask",
@@ -125,6 +139,19 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
           todoList: newTaskList
         });
       });
+      fetch('http://127.0.0.1:5000/removeItem', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          'name': task
+        })
+      }).then(function (response) {
+        return response.json();
+      })["catch"](function (error) {
+        console.error('Error:', error);
+      });
     }
   }, {
     key: "render",
@@ -133,7 +160,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 60,
+          lineNumber: 83,
           columnNumber: 11
         }
       }, /*#__PURE__*/_react["default"].createElement(_TasksList["default"], {
@@ -142,7 +169,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 61,
+          lineNumber: 84,
           columnNumber: 4
         }
       }), /*#__PURE__*/_react["default"].createElement(_NewTask["default"], {
@@ -152,7 +179,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 62,
+          lineNumber: 85,
           columnNumber: 6
         }
       }));

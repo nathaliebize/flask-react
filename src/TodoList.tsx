@@ -39,6 +39,18 @@ export default class TodoList extends React.Component<{}, TodoListState> {
 				newTask: ''
 			}));
 		}
+		fetch('http://127.0.0.1:5000/saveItem', {
+			headers: {
+				'Content-Type': 'application/json',
+			}, 
+			method: 'POST',
+			body: JSON.stringify({'name': this.state.newTask})
+		})
+		.then(response => response.json())
+		.catch((error) => {
+			console.error('Error:', error);
+		});
+
 	}
 
 	updateNewTask(task: string) {
@@ -54,6 +66,17 @@ export default class TodoList extends React.Component<{}, TodoListState> {
 			...prev,
 			todoList: newTaskList
 		}));
+		fetch('http://127.0.0.1:5000/removeItem', {
+			headers: {
+				'Content-Type': 'application/json',
+			}, 
+			method: 'POST',
+			body: JSON.stringify({'name': task})
+		})
+		.then(response => response.json())
+		.catch((error) => {
+			console.error('Error:', error);
+		});
 	}
 
 	render() {

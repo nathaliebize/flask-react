@@ -3,9 +3,10 @@ import os
 from flask import Flask
 from flask import render_template
 from flask import jsonify
+from flask import request
 
 import db
-from db import get_db
+from db import *
 
 
 def create_app(test_config=None):
@@ -21,20 +22,39 @@ def create_app(test_config=None):
         pass
 
     @app.route('/')
-    def index():
+    def index():              
         return render_template('index.html')
 
     @app.route('/list')
     def getList():
         db = get_db()
         item_list = db.execute(
-            'SELECT * FROM list WHERE auth = \'auth\''
+            'SELECT * FROM list'
         ).fetchall()
         item_list = list(map(lambda e : e['item'], item_list))
         return jsonify(
             items=item_list
         )
 
+    @app.route('/saveItem', methods=['POST'])
+    def saveItem():
+        item_to_save = request.json['name']
+        db = get_db()
+        db.execute(
+            'INSERT INTO list VALUES (1, ?);', (item_to_save,)
+        )
+        db.commit()
+        return jsonify(success=True)
+
+    @app.route('/removeItem', methods=['POST'])
+    def removeItem():
+        item_to_remove = request.json['name']
+        db = get_db()
+        db.execute(
+            'DELETE FROM list WHERE item = ?;', (item_to_remove,)
+        )
+        db.commit()
+        return jsonify(success=True)
     
     db.init_app(app)
 
