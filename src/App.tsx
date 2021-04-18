@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TodoList from './TodoList';
 
-class App extends React.Component<{}, {}> {
-   render() {
-      return (
-         <div>
-            <TodoList />
-         </div>
-      );
-   }
+import TodoList from './TodoList';
+import { store } from './app/store'
+
+const render = () => {
+   ReactDOM.render(<TodoList state={store.getState()} dispatch={store.dispatch}/>, document.getElementById('main'));
 }
 
-ReactDOM.render(<App />, document.getElementById('main'));
+store.subscribe(render);
+render();

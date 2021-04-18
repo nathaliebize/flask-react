@@ -8,7 +8,6 @@ from flask import request
 import db
 from db import *
 
-
 def create_app(test_config=None):
 
     app = Flask(__name__)
