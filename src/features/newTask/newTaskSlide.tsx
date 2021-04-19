@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 type NewTaskState = string
 
 type actionType = {
@@ -5,22 +7,30 @@ type actionType = {
 	payload: string
 }
 
-export const updateNewTask = (task: string) => {
-	return { type: 'newTask/updateNewTask', payload: task};
+type RootState = {
+	todoList: string[],
+	newTask: string
 }
 
-export const clearNewTask = () => {
-	return { type: 'newTask/clearNewTask'};
+const options = {
+    name: 'newTask',
+    initialState: '',
+    reducers: {
+        updateNewTask: (state, action) => {
+            return action.payload;
+        },
+        clearNewTask: (state, action) => {
+            return '';
+        }
+    }
 }
 
-const initialNewTask: NewTaskState = '';
+const newTaskSlide = createSlice(options);
 
-export const newTaskReducer = (newTask: NewTaskState = initialNewTask, action: actionType) => {
-	switch(action.type) {
-		case 'newTask/updateNewTask' :
-            console.log('newTaskReducer/updateNewTask');
-			return action.payload;
-		default:
-			return newTask;
-	}
+export const {updateNewTask, clearNewTask} = newTaskSlide.actions;
+
+export default newTaskSlide.reducer;
+
+export const selectNewTask = (state: RootState) => {
+    return state.newTask;
 }

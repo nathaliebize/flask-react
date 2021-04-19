@@ -3,4 +3,4 @@ venv/*
 __pycache__/*
 *.tgz
 temp/*
-instance/flask-react.sqlite
+*.sqlite

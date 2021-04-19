@@ -1,3 +1,7 @@
+import { fetchTasks, saveTaskToDB, removeTaskToDB } from '../../app/api';
+import { createSlice } from "@reduxjs/toolkit";
+
+
 type TodoListState = string[]
 
 type actionType = {
@@ -5,28 +9,55 @@ type actionType = {
 	payload: string
 }
 
-export const loadTasks = (taskList: string[]) => {
-	return { type: 'todoList/loadData', payload: taskList };
+type RootState = {
+	todoList: string[],
+	newTask: string
 }
 
-export const addTask = (task: string) => {
-	return { type: 'todoList/addTask', payload: task};
-}
-
-export const removeTask = (task:string) => {
-	return { type: 'todoList/removeTask', payload: task};
-}
-
-const initialTodoList: TodoListState = [];
-
-export const todoListReducer = (todoList: TodoListState = initialTodoList, action: actionType) => {
-	
-	switch(action.type) {
-		case 'todoList/loadData' :
-			return [...action.payload];
-		case 'todoList/addTask' :
-			return [...action.payload];
-		default: 
-			return todoList;
+const options = {
+	name: 'todoList',
+	initialState: ['fake task #1', 'fake task #2'],
+	reducers: {
+		loadTasks: (state, action) => {
+			state = action.payload;
+			
+			// () => {
+			// console.log('loading tasks.')
+			// return async (dispatch, getState) => {
+			// 	const tasks = await fetchTasks();
+			// 	dispatch({ type: 'todoList/loadData', payload: tasks});
+			// }}
+		},
+		addTask: (state, action) => {
+			state.push(action.payload);
+			// (task: string) => {
+		// 	return async (dispatch, getState) => {
+		// 		await saveTaskToDB(task);
+		// 		const tasks = await fetchTasks();
+		// 		dispatch({ type: 'todoList/loadData', payload: tasks});
+		// 	}
+		// }
+	},
+		removeTask: (state, action) => {
+			return state.filter(task => task != action.payload);
+			
+			// (task:string) => {
+			// return async (dispatch, getState) => {
+			// 	await removeTaskToDB(task);
+			// 	const tasks = await fetchTasks();
+			// 	dispatch({ type: 'todoList/loadData', payload: tasks});
+			// }
+			// }
+		}
 	}
+};
+
+const todoListSlide = createSlice(options);
+
+export const { loadTasks, addTask, removeTask} = todoListSlide.actions;
+
+export default todoListSlide.reducer;
+
+export const selectTodoList = (state: RootState) => {
+	return state.todoList;
 }

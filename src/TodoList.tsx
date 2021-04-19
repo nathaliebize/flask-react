@@ -1,85 +1,36 @@
-import React from 'react';
-import TasksList from './TasksList';
-import NewTask from './NewTask';
-import { loadTasks, addTask, removeTask } from './features/todoList/todoListSlide'
-import { updateNewTask, clearNewTask } from './features/newTask/newTaskSlide'
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-const URL_LIST = 'http://127.0.0.1:5000/list';
-const URL_SAVE_ITEM = 'http://127.0.0.1:5000/saveItem';
-const URL_REMOVE_ITEM = 'http://127.0.0.1:5000/removeItem';
+import { TasksList } from './TasksList';
+import { NewTask } from './NewTask';
+import { loadTasks, addTask, removeTask, selectTodoList } from './features/todoList/todoListSlide'
+import { updateNewTask, clearNewTask, selectNewTask} from './features/newTask/newTaskSlide'
 
-type RootState = {
-	todoList: string[],
-	newTask: string
-}
 
-type actionType = {
-	type: string,
-	payload: string
-}
+export default function TodoList (props) {
+	const todoList = useSelector(selectTodoList);
+	const newTask = useSelector(selectNewTask);
+	const dispatch = useDispatch();
 
-export default class TodoList extends React.Component<any, RootState> {
-	constructor(props: {}) {
-		super(props);
-        this.addNewTask = this.addNewTask.bind(this);
-        this.updateNewTask = this.updateNewTask.bind(this);
-        this.removeTask = this.removeTask.bind(this);
-        this.loadTask = this.loadTask.bind(this);
-		
+	useEffect(() => {
+		dispatch(loadTasks(''));
+	}, []);
+
+	function clickAddButton(task: string) {
+		dispatch(clearNewTask(''));
+		dispatch(addTask(task))
 	}
 
-	loadTask() {
-		fetch(URL_LIST)
-		.then(res => res.json())
-		.then(data => {
-			this.props.dispatch(loadTasks([...data.items]));
-		})
-		.catch(err => console.error(err));
+	function updateNewTaskField(task: string) {
+		dispatch(updateNewTask(task))
 	}
 
-	componentDidMount() {
-		this.loadTask();
+	function clickTask(task: string) {
+		dispatch(removeTask(task))
 	}
 
-	addNewTask() {
-		fetch(URL_SAVE_ITEM, {
-			headers: {
-				'Content-Type': 'application/json',
-			}, 
-			method: 'POST',
-			body: JSON.stringify({'name': this.props.state.newTask})
-		})
-		.then(response => response.json())
-		.catch((error) => {
-			console.error('Error:', error);
-		});
-		this.props.dispatch(clearNewTask());
-		this.loadTask();
-	}
-
-	updateNewTask(task: string) {
-		this.props.dispatch(updateNewTask(task))
-	}
-
-	removeTask(task: string) {
-		fetch(URL_REMOVE_ITEM, {
-			headers: {
-				'Content-Type': 'application/json',
-			}, 
-			method: 'POST',
-			body: JSON.stringify({'name': task})
-		})
-		.then(response => response.json())
-		.catch((error) => {
-			console.error('Error:', error);
-		});
-		this.loadTask();
-	}
-
-	render() {
-		return (<div>
-			<TasksList todoList={this.props.state.todoList} handleClick={this.removeTask}/>
-	  		<NewTask task={this.props.state.newTask} handleClick={this.addNewTask} handleChange={this.updateNewTask}/>
+	return (<div>
+			<TasksList handleClick={clickTask}/>
+	  		<NewTask handleClick={clickAddButton} handleChange={updateNewTaskField}/>
 	  	</div>);
-	}
 }

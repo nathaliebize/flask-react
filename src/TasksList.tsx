@@ -1,30 +1,25 @@
 import React from 'react';
-import TodoList from './TodoList';
+import { useSelector } from 'react-redux';
+import { selectTodoList } from './features/todoList/todoListSlide';
+
 
 type TasksListProps = {
-    todoList: string[]
 	handleClick: (arg: string) => void
 }
 
-export default class TasksList extends React.Component<TasksListProps, {}> {
-	constructor(props: TasksListProps) {
-		super(props);
-		this.handleClick = this.handleClick.bind(this);
+export const TasksList = (props: TasksListProps) => {
+	const todoList = useSelector(selectTodoList);
+	const handleClick = ({target}) => {
+		props.handleClick(target.innerHTML);
 	}
 
-	handleClick({target}) {
-		this.props.handleClick(target.innerHTML);
-	}
-
-	render() {
-		return (
+	return (
+		<div>
+			<h1>List</h1>
 			<div>
-				<h1>List</h1>
-				<div>
-					{this.props.todoList.map((item, index) => {
-						return <li key={index} onClick={this.handleClick}>{item}</li>;
-					})}
-				</div>
-			</div>);
-	}
+				{todoList.map((item, index) => {
+					return <li key={index} onClick={handleClick}>{item}</li>;
+				})}
+			</div>
+		</div>);
 }

@@ -1,37 +1,33 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectNewTask } from './features/newTask/newTaskSlide';
+import { selectTodoList } from './features/todoList/todoListSlide';
 
 type NewTaskProps = {
-	handleClick: () => void,
+	handleClick: (arg: string) => void,
 	handleChange: (arg: string) => void,
-	task: string,
 }
 
-export default class NewTask extends React.Component<NewTaskProps, {}> {
-	constructor(props: NewTaskProps) {
-		super(props);
-		this.handleClick = this.handleClick.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-		this.handleKeyPress = this.handleKeyPress.bind(this);
+export const NewTask = (props: NewTaskProps) => {
+	const tasks = useSelector(selectTodoList);
+	const newTask = useSelector(selectNewTask)
+
+	const handleClick = () => {
+		props.handleClick(newTask);
 	}
 
-	handleClick() {
-		this.props.handleClick();
+	const handleChange = ({target}) => {
+		props.handleChange(target.value);
 	}
 
-	handleChange({target}) {
-		this.props.handleChange(target.value);
-	}
-
-	handleKeyPress({key}) {
+	const handleKeyPress = ({key}) => {
 		if (key === 'Enter') {
-			this.handleClick()
+			handleClick()
 		}
 	}
 
-	render() {
-		return (<div>
-				<input onChange={this.handleChange} value={this.props.task} onKeyPress={this.handleKeyPress}></input>
-                <button onClick={this.handleClick}>Add</button>
-			</div>);
-	}
+	return (<div>
+		<input onChange={handleChange} value={newTask} onKeyPress={handleKeyPress}></input>
+		<button onClick={handleClick}>Add</button>
+	</div>);
 }

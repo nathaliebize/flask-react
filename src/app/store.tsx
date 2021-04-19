@@ -1,11 +1,11 @@
-import { createStore, combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-import { todoListReducer } from '../features/todoList/todoListSlide'
-import { newTaskReducer } from '../features/newTask/newTaskSlide'
+import todoListReducer from '../features/todoList/todoListSlide'
+import newTaskReducer from '../features/newTask/newTaskSlide'
 
-const reducers = {
-    todoList: todoListReducer,
-    newTask: newTaskReducer
-}
-
-export const store = createStore(combineReducers(reducers));
+export default configureStore({
+    reducer: {
+        todoList: todoListReducer,
+        newTask: newTaskReducer
+    }
+});
