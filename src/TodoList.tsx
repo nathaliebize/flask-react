@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { TasksList } from './TasksList';
 import { NewTask } from './NewTask';
-import { loadTasks, addTask, removeTask, selectTodoList } from './features/todoList/todoListSlide'
+import { fetchData, saveTask, removeTask, selectTodoList } from './features/todoList/todoListSlide'
 import { updateNewTask, clearNewTask, selectNewTask} from './features/newTask/newTaskSlide'
 
 
@@ -13,12 +14,13 @@ export default function TodoList (props) {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(loadTasks(''));
+		dispatch(fetchData());
 	}, []);
+
 
 	function clickAddButton(task: string) {
 		dispatch(clearNewTask(''));
-		dispatch(addTask(task))
+		dispatch(saveTask(task))
 	}
 
 	function updateNewTaskField(task: string) {

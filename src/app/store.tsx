@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, applyMiddleware } from '@reduxjs/toolkit';
 
 import todoListReducer from '../features/todoList/todoListSlide'
 import newTaskReducer from '../features/newTask/newTaskSlide'

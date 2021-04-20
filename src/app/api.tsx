@@ -4,15 +4,7 @@ const URL_SAVE_ITEM = 'http://127.0.0.1:5000/saveItem';
 const URL_REMOVE_ITEM = 'http://127.0.0.1:5000/removeItem';
 
 export const fetchTasks = async () => {
-    return await fetch(URL_LIST)
-    .then(res => res.json())
-    .then(data => {
-        return data.items;
-    })
-    .catch(err => {
-        console.log(err)
-        return err
-    });
+    return await fetch(URL_LIST);
 }
 
 export const saveTaskToDB = async (task: string) => {

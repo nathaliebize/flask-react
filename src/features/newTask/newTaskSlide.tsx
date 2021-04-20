@@ -16,10 +16,10 @@ const options = {
     name: 'newTask',
     initialState: '',
     reducers: {
-        updateNewTask: (state, action) => {
+        updateNewTask: (state: NewTaskState, action: actionType) => {
             return action.payload;
         },
-        clearNewTask: (state, action) => {
+        clearNewTask: (state: NewTaskState, action: actionType) => {
             return '';
         }
     }
