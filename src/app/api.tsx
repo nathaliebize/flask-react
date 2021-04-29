@@ -18,7 +18,7 @@ export const saveTaskToDB = async (task: string) => {
 }
 
 export const removeTaskToDB = async (task: string) => {
-    fetch(URL_REMOVE_ITEM, {
+    await fetch(URL_REMOVE_ITEM, {
         headers: {
             'Content-Type': 'application/json',
         }, 

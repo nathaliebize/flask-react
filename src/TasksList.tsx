@@ -15,11 +15,11 @@ export const TasksList = (props: TasksListProps) => {
 
 	return (
 		<div>
-			<h1>List</h1>
-			<div>
+			<h1>Todo List</h1>
+			<ul>
 				{todoList.map((item, index) => {
 					return <li key={index} onClick={handleClick}>{item}</li>;
 				})}
-			</div>
+			</ul>
 		</div>);
 }

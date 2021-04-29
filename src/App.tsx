@@ -7,7 +7,7 @@ import TodoList from './TodoList';
 import store from './app/store'
 
 ReactDOM.render(
-   <Provider store={store}>
-      <TodoList dispatch={store.dispatch}/>
-   </Provider>, 
+      <Provider store={store}>
+         <TodoList dispatch={store.dispatch}/>
+      </Provider>, 
    document.getElementById('main'));

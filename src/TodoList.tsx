@@ -31,7 +31,8 @@ export default function TodoList (props) {
 		dispatch(removeTask(task))
 	}
 
-	return (<div>
+	return (
+		<div>
 			<TasksList handleClick={clickTask}/>
 	  		<NewTask handleClick={clickAddButton} handleChange={updateNewTaskField}/>
 	  	</div>);

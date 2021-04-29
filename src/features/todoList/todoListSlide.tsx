@@ -1,5 +1,5 @@
 import { fetchTasks, saveTaskToDB, removeTaskToDB } from '../../app/api';
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
 type TodoListState = string[]
@@ -26,7 +26,9 @@ export const fetchData = createAsyncThunk(
 export const saveTask = createAsyncThunk(
 	'todoList/addTask',
 	async (task: string, thunkAPI) => {
-		await saveTaskToDB(task);
+		if (task != '') {
+			await saveTaskToDB(task);
+		}
 		const tasks = await fetchTasks();
 		const result = await tasks.json();
 		return result.items;
