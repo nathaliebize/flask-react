@@ -24,11 +24,11 @@ def create_app(test_config=None):
     def index():              
         return render_template('index.html')
 
-    @app.route('/list')
+    @app.route('/task')
     def getList():
         db = get_db()
         item_list = db.execute(
-            'SELECT * FROM list'
+            'SELECT * FROM task'
         ).fetchall()
         item_list = list(map(lambda e : e['item'], item_list))
         return jsonify(

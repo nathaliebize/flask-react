@@ -1,5 +1,5 @@
 
-const URL_LIST = 'http://127.0.0.1:5000/list';
+const URL_LIST = 'http://127.0.0.1:5000/task';
 const URL_SAVE_ITEM = 'http://127.0.0.1:5000/saveItem';
 const URL_REMOVE_ITEM = 'http://127.0.0.1:5000/removeItem';
 
