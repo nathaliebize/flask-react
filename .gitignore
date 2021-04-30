@@ -4,5 +4,4 @@ __pycache__/*
 *.tgz
 temp/*
 instance/flask-react.sqlite
-static/*/*.js
-static/*.js
+*.js
