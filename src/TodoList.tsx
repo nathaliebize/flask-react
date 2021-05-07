@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { TasksList } from './TasksList';
 import { NewTask } from './NewTask';
-import { fetchData, saveTask, removeTask, selectTodoList } from './features/todoList/todoListSlide'
+import { fetchData, saveTask, removeTask, selectTodoList, toggleTask } from './features/todoList/todoListSlide'
 import { updateNewTask, clearNewTask, selectNewTask} from './features/newTask/newTaskSlide'
 
 
@@ -31,9 +31,13 @@ export default function TodoList (props) {
 		dispatch(removeTask(task))
 	}
 
+	function toggle(id: number) {
+		dispatch(toggleTask(id))
+	}
+
 	return (
 		<div>
-			<TasksList handleClick={clickTask}/>
+			<TasksList handleClick={clickTask} handleToggle={toggle}/>
 	  		<NewTask handleClick={clickAddButton} handleChange={updateNewTaskField}/>
 	  	</div>);
 }

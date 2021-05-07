@@ -8,7 +8,7 @@ type actionType = {
 }
 
 type RootState = {
-	todoList: string[],
+	todoList:  {item: string, achieved: number}[],
 	newTask: string
 }
 

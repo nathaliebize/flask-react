@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { selectNewTask } from './features/newTask/newTaskSlide';
-import { selectTodoList } from './features/todoList/todoListSlide';
+// import { selectTodoList } from './features/todoList/todoListSlide';
 
 type NewTaskProps = {
 	handleClick: (arg: string) => void,
@@ -9,7 +9,6 @@ type NewTaskProps = {
 }
 
 export const NewTask = (props: NewTaskProps) => {
-	const tasks = useSelector(selectTodoList);
 	const newTask = useSelector(selectNewTask)
 
 	const handleClick = () => {
@@ -26,8 +25,10 @@ export const NewTask = (props: NewTaskProps) => {
 		}
 	}
 
-	return (<div>
-		<input onChange={handleChange} value={newTask} onKeyPress={handleKeyPress}></input>
-		<button onClick={handleClick}>Add</button>
-	</div>);
+	return (
+		<div className='newTask'>
+			<input onChange={handleChange} value={newTask} onKeyPress={handleKeyPress}></input>
+			<button onClick={handleClick}>+</button>
+		</div>
+	);
 }

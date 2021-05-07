@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import TodoList from './TodoList';
-import store from './app/store'
+import store from './app/store';
 
 ReactDOM.render(
       <Provider store={store}>

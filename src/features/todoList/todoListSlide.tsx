@@ -1,8 +1,8 @@
-import { fetchTasks, saveTaskToDB, removeTaskToDB } from '../../app/api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { fetchTasks, saveTaskToDB, removeTaskToDB, updateTaskDB } from '../../app/api';
+import { createAsyncThunk, createSlice, Dictionary } from '@reduxjs/toolkit';
 
 
-type TodoListState = string[]
+type TodoListState = {item: string, achieved: number}[]
 
 type actionType = {
 	type: string,
@@ -10,28 +10,38 @@ type actionType = {
 }
 
 type RootState = {
-	todoList: string[],
+	todoList:  {id: number, item: string, achieved: number}[],
 	newTask: string
+}
+
+const getResults = async () => {
+	const response = await fetchTasks();
+	const json = await response.json();
+	let results: {id: number, item: string, achieved: number}[] = [];
+	json.items.forEach(element => {
+		results.push({
+			id: element.id,
+			item: element.item, 
+			achieved: element.achieved
+		});
+	});
+	return results;
 }
 
 export const fetchData = createAsyncThunk(
 	'todoList/loadTasks',
-	async (arg, thunkAPI) => {
-		const tasks = await fetchTasks();
-		const result = await tasks.json();
-		return result.items;
+	async (arg, thunkAPI) => {		
+		return await getResults();
 	}
 )
 
 export const saveTask = createAsyncThunk(
 	'todoList/addTask',
 	async (task: string, thunkAPI) => {
-		if (task != '') {
+		if (task.trim() != '') {
 			await saveTaskToDB(task);
 		}
-		const tasks = await fetchTasks();
-		const result = await tasks.json();
-		return result.items;
+		return await getResults();
 	}
 )
 
@@ -39,9 +49,17 @@ export const removeTask = createAsyncThunk(
 	'todoList/removeTask',
 	async (task: string, thunkAPI) => {
 		await removeTaskToDB(task);
-		const tasks = await fetchTasks();
-		const result = await tasks.json();
-		return result.items;
+		return await getResults();
+	}
+)
+
+export const toggleTask = createAsyncThunk(
+	'todoList/toggleTask',
+	async (id: number, { getState }: any) => {
+		const todoList = selectTodoList(getState());
+		const taskToToggle = todoList.filter(e => e.id.toString() === id.toString())[0]
+		await updateTaskDB(id, !taskToToggle.achieved);
+		return await getResults();
 	}
 )
 
@@ -58,7 +76,10 @@ const options = {
 		});	
 		builder.addCase(removeTask.fulfilled, (state: TodoListState, action: actionType) => {
 			return action.payload;
-		})
+		});
+		builder.addCase(toggleTask.fulfilled, (state: TodoListState, action: actionType) => {
+			return action.payload;
+		});
 	}
 };
 
